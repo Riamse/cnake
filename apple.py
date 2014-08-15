@@ -2,7 +2,7 @@ from random import randint
 
 class Apple:
     def __init__(self, width, height, snake_pos):
-        self.pos = random_pos(width, height, snake_pos) # where is this defined
+        self.pos = self.random_pos(width, height, snake_pos)
         self.gold = (randint(0, 100) < 3)
 
     def random_pos(width, height, snake_pos):
