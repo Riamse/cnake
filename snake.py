@@ -1,13 +1,18 @@
 class Snake:
 
     def __init__(self, width, height):
-        self.pos = (width / 2, height / 2)
-        self.alive = True
+        body = []
+        x = width / 2
+        y = height / 2
+
+        body.append((x, y))
+        body.append((x, y + 1))
+        body.append((x, y + 2))
+        self.body = body
+        self.x = x
+        self.y = y
         self.size = 3
-        self.body = []
-        self.body.append(pos)
-        self.body.append((pos[0], pos[1] + 1))
-        self.body.append((pos[0], pos[1] + 2))
+        self.alive = True
         self.direction = 'up'
 
     def move(self):
@@ -15,13 +20,16 @@ class Snake:
         if self.size < len(self.body):
             del self.body[len(self.body) - 1] #check if im doing self right please lol, deleting its tail
         if self.direction == 'up':
-            self.pos = (self.pos[0] - 1, self.pos[1])
+            self.x -= 1
         elif self.direction == 'down':
-            self.pos = (self.pos[0] + 1, self.pos[1])
+            self.x += 1
         elif self.direcition == 'left':
-            self.pos = (self.pos[0], self.pos[1] - 1)
+            self.y -= 1
         elif self.direction == 'right':
-            self.pos = (self.pos[0], self.pos[1] + 1)
+            self.y += 1
         else:
             print('You made a typo')
 
+    @property
+    def position(self):
+        return self.x, self.y
