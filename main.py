@@ -1,6 +1,9 @@
 import curses
 from time import sleep
 
+from snake import Snake
+from apple import Apple
+
 window = None
 snake = None
 apple = None
@@ -28,7 +31,8 @@ def __main__():
             pass
 
         quit()
-    except:
+    except Exception as e:
+        print(e)
         print('FATAL ERROR')
         print('Sleeping for 5 seconds so you can read this')
         sleep(5)
@@ -55,3 +59,4 @@ TODO
 - portability?
 
 """
+
