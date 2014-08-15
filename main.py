@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+
+import os
 import curses
 from time import sleep
 
@@ -7,46 +10,28 @@ from apple import Apple
 window = None
 snake = None
 apple = None
-WIDTH = 80
-HEIGHT = 24
+HEIGHT, WIDTH = os.get_terminal_size()
 
-def __main__():
-    try:
-        global window, snake, apple
-        window = curses.initscr()
-        curses.noecho()
-        curses.cbreak()
-        window.keypad(1)
-        curses.newwin(10, 5, 10, 10)
-        #print(window.getmaxyx())
-        #window.clear()
-        #curses.resizeterm(HEIGHT, WIDTH) <- doesnt work
-        #window.refresh()
-        #sleep(2)
+def __main__(window):
+    #print(window.getmaxyx())
+    #window.clear()
+    #curses.resizeterm(HEIGHT, WIDTH) <- doesnt work
+    #window.refresh()
+    #sleep(2)
+    window.clear()
+    window.addstr(0, 0, "This is a snake game")
+    window.refresh()
+    sleep(3)
 
-        snake = Snake(WIDTH, HEIGHT)
-        apple = Apple(WIDTH, HEIGHT, snake.pos)
+    snake = Snake(WIDTH, HEIGHT)
+    apple = Apple(WIDTH, HEIGHT, snake.position)
 
-        while (snake.alive):
-            pass
+    while snake.alive:
+        pass
 
-        quit()
-    except Exception as e:
-        print(e)
-        print('FATAL ERROR')
-        print('Sleeping for 5 seconds so you can read this')
-        sleep(5)
-        quit()
-
-def quit():
-    global window
-    curses.nocbreak()
-    window.keypad(0)
-    curses.echo()
-    curses.endwin()
 
 if __name__ == '__main__':
-    __main__()
+    curses.wrapper(__main__)
 
 """
 
