@@ -2,6 +2,7 @@
 
 import os
 import sys
+import traceback
 import curses
 from time import sleep
 
@@ -45,7 +46,13 @@ def main(window):
 
 
 if __name__ == '__main__':
-    curses.wrapper(main)
+    try:
+        curses.wrapper(main)
+    except curses.error:
+        raise
+    except Exception:
+        traceback.print_exc()
+        raise SystemExit(0)
 
 """
 
