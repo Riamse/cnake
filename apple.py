@@ -1,4 +1,4 @@
-from random import randint
+from random import randrange
 import time
 
 class Apple:
@@ -10,11 +10,24 @@ class Apple:
         self.set_new_pos(snake_pos)
 
     def random_pos(self, snake_pos):
-        self.gold = (randint(0, 100) < 3)
-        loc = randint(0, self.width), randint(0, self.height)
+        self.gold = (randrange(0, 100) < 3)
+        loc = randrange(0, self.width), randrange(0, self.height)
         while loc in snake_pos or loc == self.pos:
-            loc = randint(0, self.width), randint(0, self.height)
+            loc = randrange(0, self.width), randrange(0, self.height)
         return loc
 
     def set_new_pos(self, snake_pos):
         self.pos = self.random_pos(snake_pos)
+
+    @property
+    def position(self):
+        return self.pos
+
+    @property
+    def x(self):
+        return self.pos[0]
+
+    @property
+    def y(self):
+        return self.pos[1]
+

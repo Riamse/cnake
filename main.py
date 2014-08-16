@@ -13,23 +13,18 @@ dir_dict = {curses.KEY_UP: "up", curses.KEY_DOWN: "down", curses.KEY_LEFT: "left
 WIDTH, HEIGHT = 80, 24#os.get_terminal_size()
 
 def main(window):
-    #print(window.getmaxyx())
-    #window.clear()
-    #curses.resizeterm(HEIGHT, WIDTH) <- doesnt work
-    #window.refresh()
-    #sleep(2)
+    curses.use_default_colors()
+    for i in range(0, curses.COLORS):
+        curses.init_pair(i, i, -1)
     curses.curs_set(0)  # invisible cursor
     window.nodelay(1)
     window.clear()
-    #window.addstr(0, 0, "This is a snake game")
-    #window.refresh()
-    #sleep(3)
 
     snake = Snake(WIDTH, HEIGHT)
 
     while snake.alive:
-        #window.addstr(0, 0, str(snake.body))
-        window.addch(snake.apple.pos[1], snake.apple.pos[0], b"A")
+        apple_colour = curses.color_pair(3) if snake.apple.gold   or 1 else 0
+        window.addch(snake.apple.y, snake.apple.x, b"A", apple_colour)
         window.move(0, 0)
         for x, y in snake.body:
             window.addch(y, x, b"X")
