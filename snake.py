@@ -6,21 +6,19 @@ from apple import Apple
 class Snake:
 
     def __init__(self, width, height):
-        body = []
-        x = width / 2
-        y = height / 2
+        # body[0] is the tail, body[-1] is the head
+        x = width // 2
+        y = height // 2
         self.width = width
         self.height = height
 
-        body.append((x, y))
-        body.append((x, y + 1))
-        body.append((x, y + 2))
+        body = [(x, y + 2), (x, y + 1), (x, y)]
         self.body = body
         self.x = x
         self.y = y
         self.size = 3
         self.alive = True
-        self.direction = 'up'
+        self.direction = 'left'
         self.apples_consumed = 0
         self.apple = Apple(width, height, self.body)
 
@@ -29,17 +27,12 @@ class Snake:
             self.x -= 1
         elif self.direction == 'down':
             self.x += 1
-        elif self.direcition == 'left':
+        elif self.direction == 'left':
             self.y -= 1
         elif self.direction == 'right':
             self.y += 1
         else:
             print('You made a typo')
-        #update head (head at end of list, tail at beginning)
-        self.body.append((self.x, self.y))
-        #if the snake size is too big, delete its tail, otherwise let it grow to however many units
-        if self.size < len(self.body) and len(self.body) > 0:
-            del self.body[0]
         #check if ate apple
         if self.position == self.apple.pos:
             self.size += 1
@@ -48,9 +41,14 @@ class Snake:
             self.apple.set_new_pos(self.body)
         #check dead
         if self.out_of_bounds or self.position in self.body:
-            self.alive = False
+            #self.alive = False
             #delete current head to prevent index out of bound
-            del self.body[len(self.body) - 1]
+            del self.body[-1]
+        #update head (head at end of list, tail at beginning)
+        self.body.append((self.x, self.y))
+        #if the snake size is too big, delete its tail, otherwise let it grow to however many units
+        if len(self.body) > self.size:
+            del self.body[0]
 
     @property
     def out_of_bounds(self):
