@@ -26,15 +26,18 @@ def main(window):
 
     while snake.alive:
         #window.addstr(0, 0, str(snake.body))
+        window.addch(snake.apple.pos[1], snake.apple.pos[0], b"A")
+        window.refresh()
+        sleep(0.05)
         for y, x in snake.body:
             window.addch(y, x, b"X")
             window.addstr(0, 0, str(snake.body))
-            window.refresh()
-            sleep(0.01)  # curses is retarded
+            #window.refresh()
+            #sleep(0.01)  # curses is retarded
         window.refresh()
-        sleep(1)
+        sleep(0.05)
         window.clear()
-        snake.direction = dir_dict.get(window.getch(), 0) or snake.direction
+        snake.set_direction(dir_dict.get(window.getch(), 0) or snake.direction)
         snake.move()
 
 

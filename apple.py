@@ -1,4 +1,5 @@
 from random import randint
+import time
 
 class Apple:
     def __init__(self, width, height, snake_pos):
@@ -11,7 +12,7 @@ class Apple:
     def random_pos(self, snake_pos):
         self.gold = (randint(0, 100) < 3)
         loc = randint(0, self.width), randint(0, self.height)
-        while loc in snake_pos:
+        while loc in snake_pos or loc == self.pos:
             loc = randint(0, self.width), randint(0, self.height)
         return loc
 

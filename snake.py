@@ -50,6 +50,17 @@ class Snake:
         if len(self.body) > self.size:
             del self.body[0]
 
+    def set_direction(self, direction):
+        if self.direction == 'up' and direction == 'down':
+            return
+        if self.direction == 'left' and direction == 'right':
+            return
+        if self.direction == 'right' and direction == 'left':
+            return
+        if self.direction == 'down' and direction == 'up':
+            return
+        self.direction = direction
+
     @property
     def out_of_bounds(self):
         if self.x < 0 or self.y < 0:
