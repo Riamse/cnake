@@ -30,7 +30,7 @@ def main(window):
             window.addch(y, x, b"X")
             window.addstr(0, 0, str(snake.body))
             window.refresh()
-            sleep(0.01)
+            sleep(0.01)  # curses is retarded
         window.refresh()
         sleep(1)
         window.clear()
