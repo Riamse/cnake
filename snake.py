@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+
+from apple import Apple
+
+
 class Snake:
 
     def __init__(self, width, height):
@@ -36,17 +41,18 @@ class Snake:
         if self.size < len(self.body) and len(self.body) > 0:
             del self.body[0]
         #check if ate apple
-        if self.position() == self.apple.pos:
+        if self.position == self.apple.pos:
             self.size += 1
             if self.apple.gold: #increase size by total of 5
                 self.size += 4
             self.apple.set_new_pos(self.body)
         #check dead
-        if self.out_of_bounds() or self.position in self.body:
+        if self.out_of_bounds or self.position in self.body:
             self.alive = False
             #delete current head to prevent index out of bound
             del self.body[len(self.body) - 1]
 
+    @property
     def out_of_bounds(self):
         if self.x < 0 or self.y < 0:
             return True
