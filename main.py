@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import sys
 import curses
 from time import sleep
 
@@ -16,10 +17,11 @@ def main(window):
     #curses.resizeterm(HEIGHT, WIDTH) <- doesnt work
     #window.refresh()
     #sleep(2)
+    curses.curs_set(0)  # invisible cursor
     window.nodelay(1)
     window.clear()
-    window.addstr(0, 0, "This is a snake game")
-    window.refresh()
+    #window.addstr(0, 0, "This is a snake game")
+    #window.refresh()
     #sleep(3)
 
     snake = Snake(WIDTH, HEIGHT)
@@ -27,17 +29,18 @@ def main(window):
     while snake.alive:
         #window.addstr(0, 0, str(snake.body))
         window.addch(snake.apple.pos[1], snake.apple.pos[0], b"A")
-        window.refresh()
-        sleep(0.05)
+        window.move(0, 0)
         for y, x in snake.body:
             window.addch(y, x, b"X")
-            window.addstr(0, 0, str(snake.body))
-            #window.refresh()
+            window.refresh()
             #sleep(0.01)  # curses is retarded
         window.refresh()
-        sleep(0.05)
+        sleep(0.1)
         window.clear()
-        snake.set_direction(dir_dict.get(window.getch(), 0) or snake.direction)
+        ch = window.getch()
+        if ch == ord("q"):
+            snake.alive = False
+        snake.set_direction(dir_dict.get(ch, 0) or snake.direction)
         snake.move()
 
 
