@@ -40,7 +40,7 @@ def main(window):
         ch = window.getch()
         if ch == ord("q"):
             snake.alive = False
-        snake.set_direction(dir_dict.get(ch, 0) or snake.direction)
+        snake.set_direction(dir_dict.get(ch, None))
         snake.move()
 
 

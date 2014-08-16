@@ -51,6 +51,8 @@ class Snake:
             del self.body[0]
 
     def set_direction(self, direction):
+        if not direction:
+            return
         if self.direction == 'up' and direction == 'down':
             return
         if self.direction == 'left' and direction == 'right':
