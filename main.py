@@ -10,7 +10,7 @@ from snake import Snake
 from apple import Apple
 
 dir_dict = {curses.KEY_UP: "up", curses.KEY_DOWN: "down", curses.KEY_LEFT: "left", curses.KEY_RIGHT: "right"}
-HEIGHT, WIDTH = 80, 24#os.get_terminal_size()
+WIDTH, HEIGHT = 80, 24#os.get_terminal_size()
 
 def main(window):
     #print(window.getmaxyx())
@@ -31,7 +31,7 @@ def main(window):
         #window.addstr(0, 0, str(snake.body))
         window.addch(snake.apple.pos[1], snake.apple.pos[0], b"A")
         window.move(0, 0)
-        for y, x in snake.body:
+        for x, y in snake.body:
             window.addch(y, x, b"X")
             window.refresh()
             #sleep(0.01)  # curses is retarded

@@ -23,14 +23,16 @@ class Snake:
         self.apple = Apple(width, height, self.body)
 
     def move(self):
+        # since curses is based off of the top left corner, we need to make
+        # these functions appear to be backwards
         if self.direction == 'up':
-            self.x -= 1
-        elif self.direction == 'down':
-            self.x += 1
-        elif self.direction == 'left':
             self.y -= 1
-        elif self.direction == 'right':
+        elif self.direction == 'down':
             self.y += 1
+        elif self.direction == 'left':
+            self.x -= 1
+        elif self.direction == 'right':
+            self.x += 1
         else:
             print('You made a typo')
         #check if ate apple
