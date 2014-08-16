@@ -24,7 +24,6 @@ def __main__(window):
     sleep(3)
 
     snake = Snake(WIDTH, HEIGHT)
-    apple = Apple(WIDTH, HEIGHT, snake.position)
 
     while snake.alive:
         pass
