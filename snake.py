@@ -42,7 +42,7 @@ class Snake:
                 self.size += 4
             self.apple.set_new_pos(self.body)
         #check dead
-        if self.out_of_bounds():
+        if self.out_of_bounds() or self.position in self.body:
             self.alive = False
             #delete current head to prevent index out of bound
             del self.body[len(self.body) - 1]
