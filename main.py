@@ -33,8 +33,13 @@ def main(window):
     #for i in range(0, curses.COLORS):
         #curses.init_pair(i, i, -1)
     curses.curs_set(0)  # invisible cursor
-    window.nodelay(1)
     window.clear()
+    # intro screen
+    window.addstr(0, 0, "Welcome to cnake")
+    window.addstr(1, 0, "Type 'c' to begin")
+    while window.getch() != ord('c'):
+        pass
+    window.nodelay(1)
 
     snake = Snake(WIDTH, HEIGHT)
 
