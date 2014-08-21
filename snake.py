@@ -19,7 +19,6 @@ class Snake:
         self.size = 3
         self.alive = True
         self.direction = 'left'
-        self.apples_consumed = 0
         self.apple = Apple(width, height, self.body)
 
     def move(self):

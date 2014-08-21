@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
         if (res != -1)
             break;
         rewind(fp);
+        printf("There was an error in the script. Restarting...\n");
     }
     Py_Finalize();
     fclose(fp);

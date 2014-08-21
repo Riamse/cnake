@@ -17,6 +17,14 @@ class Color():
 dir_dict = {curses.KEY_UP: "up", curses.KEY_DOWN: "down", curses.KEY_LEFT: "left", curses.KEY_RIGHT: "right"}
 WIDTH, HEIGHT = 80, 24#os.get_terminal_size()
 
+
+def game_over(window, snake):
+    window.clear()
+    window.addstr(0, 0, "You lose, sucker")
+    window.addstr(1, 0, "You had %d points" % (snake.size - 3, ))
+    window.refresh()
+    sleep(3)
+
 def main(window):
     curses.use_default_colors()
     curses.init_pair(Color.BLACK, curses.COLOR_BLACK, curses.COLOR_BLACK)
@@ -45,8 +53,11 @@ def main(window):
         ch = window.getch()
         if ch == ord("q"):
             snake.alive = False
+            break
         snake.set_direction(dir_dict.get(ch, None))
         snake.move()
+    else:
+        game_over(window, snake)
 
 
 if __name__ == '__main__':
