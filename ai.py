@@ -13,7 +13,7 @@ class Ai(Snake):
 
     def move(self):
         if len(turn_points) > 0:
-            if self.position() == turn_points[0][0]:
+            if self.position == turn_points[0][0]:
                 self.direction = turn_points[0][1]
                 del turn_points[0]
             else:
@@ -25,19 +25,15 @@ class Ai(Snake):
 
     #a* implementation of path finding
     def generate_path(self):
-        location_queue = [self.position()]
+        location_queue = [self.position]
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
-        while len(location_queue > 0) or self.position() != self.apple.pos:
+        while len(location_queue) > 0 or self.position != self.apple.pos:
             location_queue.append((self.x + 1, self.y))
             location_queue.append((self.x - 1, self.y))
             location_queue.append((self.x, self.y + 1))
             location_queue.append((self.x, self.y - 1))
             location_queue.sort(key=self.dist)
-            for blah in location_queue:
-                print(blah)
-                sleep(3)
-            return
 
     def dist(self, val):
         dx = self.apple.x - val[0]
