@@ -37,11 +37,10 @@ def main(window):
     window.clear()
     # intro screen
     
-    #window.addstr(0, 0, "Welcome to cnake")
-    #window.addstr(1, 0, "Press Enter to begin")
     ai = Ai(WIDTH, HEIGHT)
+    #press enter to start
     while window.getch() != 10:
-        ai.move() #make snake game play by itself
+        ai.move() #make snake game play by itself on start menu
     del ai
 
     window.nodelay(1)
