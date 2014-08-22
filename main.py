@@ -38,7 +38,7 @@ def main(window):
     # intro screen
     
     ai = Ai(WIDTH, HEIGHT)
-    #press enter to start
+    #press enter to start the game
     while window.getch() != 10:
         ai.move() #make snake game play by itself on start menu
     del ai
