@@ -6,7 +6,7 @@ from time import sleep
 class Ai(Snake):
     def __init__(self, width, height):
         super().__init__(width, height - 5)
-        grid = [[0 for i in range(width)] for i in range(height - 5)]
+        #grid = [[-1 for i in range(width)] for i in range(height - 5)]
         turn_points = [] #tuple -> ((x, y), new_direction)
         apple_loc = self.apple.pos
         self.generate_path()
@@ -23,17 +23,29 @@ class Ai(Snake):
         if self.apple.pos != apple_loc:
             self.generate_path()
 
-    #a* implementation of path finding
+    #implement a* path finding here
     def generate_path(self):
         location_queue = [self.position]
+        from_track = {}
+        from_track[grid[0]] = None
+        cost = {}
+        cost[grid[0]] = 0
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
         while len(location_queue) > 0 or self.position != self.apple.pos:
-            location_queue.append((self.x + 1, self.y))
-            location_queue.append((self.x - 1, self.y))
-            location_queue.append((self.x, self.y + 1))
-            location_queue.append((self.x, self.y - 1))
-            location_queue.sort(key=self.dist)
+            current = location_queue[0]
+            del location_queue[0]
+            if x + 1 < self.width:
+                location_queue.append((self.x + 1, self.y))
+            if x - 1 >= 0:
+                location_queue.append((self.x - 1, self.y))
+            if y + 1 < self.height:
+                location_queue.append((self.x, self.y + 1))
+            if y - 1 >= 0:
+                location_queue.append((self.x, self.y - 1))
+            location_queue.sort(key=self.dist) #priority queue it
+            from_track[location_queue[0]] = current
+            new_cost = cost[current] + cost[from_track[current]]
 
     def dist(self, val):
         dx = self.apple.x - val[0]
