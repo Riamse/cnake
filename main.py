@@ -41,7 +41,7 @@ def main(window):
     #window.addstr(1, 0, "Press Enter to begin")
     ai = Ai(WIDTH, HEIGHT)
     while window.getch() != 10:
-        ai.move()
+        ai.move() #make snake game play by itself
     del ai
 
     window.nodelay(1)
