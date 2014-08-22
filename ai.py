@@ -26,26 +26,22 @@ class Ai(Snake):
     #implement a* path finding here
     def generate_path(self):
         location_queue = [self.position]
-        from_track = {}
-        from_track[grid[0]] = None
-        cost = {}
-        cost[grid[0]] = 0
+        
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
         while len(location_queue) > 0 or self.position != self.apple.pos:
             current = location_queue[0]
             del location_queue[0]
             if x + 1 < self.width:
-                location_queue.append((self.x + 1, self.y))
+                location_queue.append((current[0] + 1, current[1]))
             if x - 1 >= 0:
-                location_queue.append((self.x - 1, self.y))
+                location_queue.append((current[0] - 1, current[1]))
             if y + 1 < self.height:
-                location_queue.append((self.x, self.y + 1))
+                location_queue.append((current[0], current[1] + 1))
             if y - 1 >= 0:
-                location_queue.append((self.x, self.y - 1))
+                location_queue.append((current[0], current[1] - 1))
             location_queue.sort(key=self.dist) #priority queue it
-            from_track[location_queue[0]] = current
-            new_cost = cost[current] + cost[from_track[current]]
+            
 
     def dist(self, val):
         dx = self.apple.x - val[0]
