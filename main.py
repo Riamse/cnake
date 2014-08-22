@@ -6,6 +6,7 @@ import traceback
 import curses
 from time import sleep
 
+from ai import Ai
 from snake import Snake
 from apple import Apple
 
@@ -20,7 +21,7 @@ WIDTH, HEIGHT = 80, 24#os.get_terminal_size()
 
 def game_over(window, snake):
     window.clear()
-    window.addstr(0, 0, "You lose, sucker")
+    window.addstr(0, 0, "Game Over! You lose.")
     window.addstr(1, 0, "You had %d points" % (snake.size - 3, ))
     window.refresh()
     sleep(3)
@@ -35,10 +36,14 @@ def main(window):
     curses.curs_set(0)  # invisible cursor
     window.clear()
     # intro screen
-    window.addstr(0, 0, "Welcome to cnake")
-    window.addstr(1, 0, "Type 'c' to begin")
-    while window.getch() != ord('c'):
-        pass
+    
+    #window.addstr(0, 0, "Welcome to cnake")
+    #window.addstr(1, 0, "Press Enter to begin")
+    ai = Ai(WIDTH, HEIGHT)
+    while window.getch() != 10:
+        ai.move()
+    del ai
+
     window.nodelay(1)
 
     snake = Snake(WIDTH, HEIGHT)
@@ -56,14 +61,13 @@ def main(window):
         sleep(0.05)
         window.clear()
         ch = window.getch()
-        if ch == ord("q"):
+        if ch in [ord("q"), 27]: #27 == escape button
             snake.alive = False
             break
         snake.set_direction(dir_dict.get(ch, None))
         snake.move()
     else:
         game_over(window, snake)
-
 
 if __name__ == '__main__':
     try:
