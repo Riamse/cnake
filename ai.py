@@ -25,31 +25,27 @@ class Ai(Snake):
 
     #implement a* path finding here
     def generate_path(self):
-        location_queue = self.get_adjacent_locs(self.position) + [self.position]
+        location_queue = [self.position]
         came_from = {}
         cost_at = {}
-        came_from[location_queue[-1]] = None
-        cost_at[location_queue[-1]] = 0
-        for pos in location_queue[:1]:
-            came_from[pos] = self.position
-            cost_at[pos] = 1
+        came_from[location_queue[0]] = None
+        cost_at[location_queue[0]] = 0
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
-        while len(location_queue) > 0 or self.position != self.apple.pos:
-            if self.position == self.apple.pos:
+        while len(location_queue) > 0:
+            current = location_queue[0]
+            del location_queue[0]
+            if current == self.apple.pos:
                 print('Target found')
                 sleep(3)
                 break
                 #implement backtrack
-            current = location_queue[0]
-            del location_queue[0]
             neighbors = self.get_adjacent_locs(current)
             for next in neighbors:
-                new_cost = cost_at[came_from[current]] + 1
+                new_cost = cost_at[current] + 1
                 if next not in cost_at or new_cost < cost_at[next]:
                     cost_at[next] = new_cost
-                    if next not in location_queue:
-                        location_queue.append(next)
+                    location_queue.append(next)
                     came_from[next] = current
             location_queue.sort(key=self.dist) #priority queue it
 
