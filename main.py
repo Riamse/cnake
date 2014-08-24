@@ -31,42 +31,47 @@ def main(window):
     curses.init_pair(Color.BLACK, curses.COLOR_BLACK, curses.COLOR_BLACK)
     curses.init_pair(Color.GREEN, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(Color.GOLD, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-    #for i in range(0, curses.COLORS):
-        #curses.init_pair(i, i, -1)
+
     curses.curs_set(0)  # invisible cursor
     window.clear()
-    # intro screen
+    window.nodelay(1)
     
+    # intro screen 
     ai = Ai(WIDTH, HEIGHT)
     #press enter to start the game
     while window.getch() != 10:
         ai.move() #make snake game play by itself on start menu
+        display(window, ai, accept_input=False)
+        if not ai.alive:
+            ai = Ai(WIDTH, HEIGHT)
     del ai
-
-    window.nodelay(1)
+    window.clear()
 
     snake = Snake(WIDTH, HEIGHT)
 
     while snake.alive:
-        apple_colour = curses.color_pair(Color.GOLD) if snake.apple.gold else curses.color_pair(Color.GREEN)
-        window.addch(snake.apple.y, snake.apple.x, b"A", apple_colour)
-        window.move(0, 0)
-        window.addch(snake.body[-1][1], snake.body[-1][0], b"X")
-        for x, y in snake.body[:-1]:
-            window.addch(y, x, b"O")
-            window.refresh()
-            #sleep(0.01)  # curses is retarded
-        window.refresh()
-        sleep(0.05)
-        window.clear()
-        ch = window.getch()
-        if ch in [ord("q"), 27]: #27 == escape button
-            snake.alive = False
-            break
-        snake.set_direction(dir_dict.get(ch, None))
-        snake.move()
+        display(window, snake)
     else:
         game_over(window, snake)
+
+def display(window, snake, accept_input=True, sleep_rate=0.05):
+    apple_colour = curses.color_pair(Color.GOLD) if snake.apple.gold else curses.color_pair(Color.GREEN)
+    window.addch(snake.apple.y, snake.apple.x, b"A", apple_colour)
+    window.move(0, 0)
+    window.addch(snake.body[-1][1], snake.body[-1][0], b"X")
+    for x, y in snake.body[:-1]:
+        window.addch(y, x, b"O")
+        window.refresh()
+        #sleep(0.01)  # curses is retarded
+    window.refresh()
+    sleep(sleep_rate)
+    window.clear()
+    ch = window.getch()
+    if ch in [ord("q"), 27]: #27 == escape button
+        snake.alive = False
+    if accept_input:
+        snake.set_direction(dir_dict.get(ch, None))
+    snake.move()
 
 if __name__ == '__main__':
     try:
