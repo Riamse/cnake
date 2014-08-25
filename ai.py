@@ -2,7 +2,7 @@
 
 from snake import Snake
 from time import sleep
-from copy import copy
+from copy import deepcopy
 
 class Ai(Snake):
     def __init__(self, width, height):
@@ -30,22 +30,28 @@ class Ai(Snake):
         came_from[location_queue[0]] = None
         cost_at[location_queue[0]] = 0
 
-        #body[0] is tail, body[-1] is head
-        moving_wall = copy(self.body)
-        previous_locs = []
+        #fix moving wall
+        """
+        moving_wall = [(self.body[i], i) for i in enumerate(self.body)]
+        visited = deepcopy(moving_wall)
+        depth = len(moving_wall) + 1
+        """
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
         while len(location_queue) > 0:
             current = location_queue[0]
             del location_queue[0]
-            if False and not self.adjacent(current, moving_wall[-1]):
-                del moving_wall[-1]
-                moving_wall.insert(0, previous_locs[-1])
-                del previous_locs[-1]
-            moving_wall.append(current)
-            if len(moving_wall) > self.size:
-                previous_locs = moving_wall[0]
-                del moving_wall[0]
+            """
+            visited.append((current, depth))
+            depth += 1
+            visited.sort(key=lambda coordinate: coordinate[1])
+            #remove lowest depth item
+            lowest = moving_wall[0]
+            for compare in moving_wall[1:]:
+                if compare[1] < lowest[1]:
+                    lowest = compare
+            moving_wall
+            """
             if current == self.apple.pos:
                 travel_points = []
                 track_current = current
@@ -69,7 +75,8 @@ class Ai(Snake):
                     self.f.write('\n')
                 #DEBUG STUFF
                 break
-            neighbors = self.get_adjacent_locs(current, moving_wall)
+            #neighbors = self.get_adjacent_locs(current, moving_wall)
+            neighbors = self.get_adjacent_locs(current, self.body)
             for next in neighbors:
                 new_cost = cost_at[current] + 1
                 if next not in cost_at or new_cost < cost_at[next]:
