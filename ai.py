@@ -77,4 +77,4 @@ class Ai(Snake):
             neighbors.append((location[0], location[1] + 1))
         if location[1] - 1 >= 0:
             neighbors.append((location[0], location[1] - 1))
-        return neighbors
+        return list(set(neighbors) - set(self.body))
