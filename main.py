@@ -43,6 +43,7 @@ def main(window):
         ai.move() #make snake game play by itself on start menu
         display(window, ai, accept_input=False)
         if not ai.alive:
+            sleep(30)
             ai = Ai(WIDTH, HEIGHT)
     del ai
     window.clear()
