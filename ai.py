@@ -7,16 +7,14 @@ class Ai(Snake):
     def __init__(self, width, height):
         super().__init__(width, height - 5)
         #grid = [[-1 for i in range(width)] for i in range(height - 5)]
-        turn_points = [] #tuple -> ((x, y), new_direction)
+        self.travel_points = []
         self.apple_loc = self.apple.pos
         self.generate_path()
 
     def move(self):
-        if len(self.turn_points) > 0:
-            if self.position == self.turn_points[0][0]:
-                self.direction = self.turn_points[0][1]
-                del self.turn_points[0]
-        super().move()
+        if self.travel_points:
+            self.x, self.y = self.travel_points.pop(0)
+        super().move(by_dir=False)
         #apple location moved, recalculate path to it
         if self.apple.pos != self.apple_loc:
             self.generate_path()
@@ -41,7 +39,7 @@ class Ai(Snake):
                     travel_points.append(track_current)
                     track_current = came_from[track_current]
                 travel_points.sort(key=self.dist)
-                self.turn_points = self.find_turn_points(travel_points[::-1])
+                self.travel_points = travel_points[::-1]
                 break
             neighbors = self.get_adjacent_locs(current)
             for next in neighbors:
@@ -52,45 +50,6 @@ class Ai(Snake):
                     came_from[next] = current
             location_queue.sort(key=self.dist) #priority queue it
 
-    def find_turn_points(self, travel_points):
-        f = open('log.out', 'w')
-        f.write('Position:')
-        f.write(str(self.position))
-        f.write('\nApple:')
-        f.write(str(self.apple.pos))
-        f.write('\nAll Path:')
-        f.write(str(travel_points))
-        f.write('\nTurn Path:')
-        turns = []
-        if len(travel_points) == 2:
-            new_direction = self.get_dir(travel_points[1], travel_points[0])
-            turns.append((travel_points[1], new_direction))
-            return turns
-        loc = travel_points[0]
-        current_direction = self.get_dir(travel_points[0], travel_points[1])
-        for point in travel_points[1:]:
-            new_direction = self.get_dir(loc, point)
-            if new_direction != current_direction:
-                turns.append((loc, new_direction))
-                current_direction = new_direction
-            loc = point
-        f.write(str(turns))
-        f.write('\n\n')
-        grid = [['.' for i in range(self.width)] for i in range(self.height)]
-        for item in travel_points:
-            x, y = item
-            grid[y][x] = 'X'
-        grid[self.y][self.x] = 'S'
-        for i in grid:
-            for j in i:
-                f.write(j)
-            f.write('\n')
-        f.close()
-        #print('finish')
-        #sleep(20)
-        return turns
-
-    #get direction of pt1 -> pt2
     def get_dir(self, pt1, pt2):
         if pt2[0] == pt1[0] and pt2[1] != pt1[1]: #vertical
             if pt2[1] > pt1[1]:

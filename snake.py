@@ -18,22 +18,25 @@ class Snake:
         self.y = y
         self.size = 3
         self.alive = True
+        self.direction = ""  # don't move yet
         self.direction = 'left'
         self.apple = Apple(width, height, self.body)
 
-    def move(self):
+    def move(self, by_dir=True):
         # since curses is based off of the top left corner, we need to make
         # these functions appear to be backwards
-        if self.direction == 'up':
-            self.y -= 1
-        elif self.direction == 'down':
-            self.y += 1
-        elif self.direction == 'left':
-            self.x -= 1
-        elif self.direction == 'right':
-            self.x += 1
-        else:
-            print('You made a typo')
+        if by_dir:
+            if self.direction == 'up':
+                self.y -= 1
+            elif self.direction == 'down':
+                self.y += 1
+            elif self.direction == 'left':
+                self.x -= 1
+            elif self.direction == 'right':
+                self.x += 1
+            else:
+                # you made a typo, or didn't choose a way to go yet
+                pass
         #check if ate apple
         if self.position == self.apple.pos:
             self.size += 1
@@ -63,6 +66,7 @@ class Snake:
         if self.direction == 'down' and direction == 'up':
             return
         self.direction = direction
+        return True
 
     @property
     def out_of_bounds(self):

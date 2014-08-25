@@ -39,7 +39,7 @@ def main(window):
     # intro screen 
     ai = Ai(WIDTH, HEIGHT)
     #press enter to start the game
-    while window.getch() != 10:
+    while window.getch() != ord("\n"):
         ai.move() #make snake game play by itself on start menu
         display(window, ai, accept_input=False)
         if not ai.alive:
