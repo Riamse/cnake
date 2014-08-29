@@ -10,7 +10,7 @@ class Ai(Snake):
         self.travel_points = []
         self.apple_loc = self.apple.pos
         #DEBUG
-        self.f = open('log.out', 'w')
+        #self.f = open('log.out', 'w')
         self.generate_path()
 
     def move(self):
