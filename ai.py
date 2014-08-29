@@ -24,34 +24,19 @@ class Ai(Snake):
 
     #implement a* path finding here
     def generate_path(self):
-        location_queue = [self.position]
+        location_queue = [(self.position, deepcopy(self.body))]
         came_from = {}
         cost_at = {}
-        came_from[location_queue[0]] = None
-        cost_at[location_queue[0]] = 0
+        came_from[self.position] = None
+        cost_at[self.position] = 0
 
-        #fix moving wall
-        """
-        moving_wall = [(self.body[i], i) for i in enumerate(self.body)]
-        visited = deepcopy(moving_wall)
-        depth = len(moving_wall) + 1
-        """
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
         while len(location_queue) > 0:
-            current = location_queue[0]
+            moving_wall = deepcopy(location_queue[0][1])
+            current = location_queue[0][0]
             del location_queue[0]
-            """
-            visited.append((current, depth))
-            depth += 1
-            visited.sort(key=lambda coordinate: coordinate[1])
-            #remove lowest depth item
-            lowest = moving_wall[0]
-            for compare in moving_wall[1:]:
-                if compare[1] < lowest[1]:
-                    lowest = compare
-            moving_wall
-            """
+            
             if current == self.apple.pos:
                 travel_points = []
                 track_current = current
@@ -60,6 +45,7 @@ class Ai(Snake):
                     track_current = came_from[track_current]
                 #travel_points.sort(key=self.dist)
                 self.travel_points = travel_points[::-1]
+                """
                 #DEBUG STUFF
                 self.f.write('=========================\n')
                 self.f.write(str(self.travel_points))
@@ -74,14 +60,17 @@ class Ai(Snake):
                         self.f.write(j)
                     self.f.write('\n')
                 #DEBUG STUFF
+                """
                 break
-            #neighbors = self.get_adjacent_locs(current, moving_wall)
-            neighbors = self.get_adjacent_locs(current, self.body)
+            neighbors = self.get_adjacent_locs(current, moving_wall)
             for next in neighbors:
                 new_cost = cost_at[current] + 1
                 if next not in cost_at or new_cost < cost_at[next]:
                     cost_at[next] = new_cost
-                    location_queue.append(next)
+                    next_moving_wall = deepcopy(moving_wall)
+                    del next_moving_wall[0]
+                    next_moving_wall.append(next)
+                    location_queue.append((next, next_moving_wall))
                     came_from[next] = current
             location_queue.sort(key=self.dist) #priority queue it
 
@@ -102,10 +91,12 @@ class Ai(Snake):
         return 'left'
 
     def dist(self, val):
+        val = val[0]
         dx = self.apple.x - val[0]
         dy = self.apple.y - val[1]
-        to_square = dx * dx + dy * dy
-        return to_square ** 2
+        #to_square = dx * dx + dy * dy
+        #return to_square ** 2
+        return abs(dx) + abs(dy)
 
     def get_adjacent_locs(self, location, moving_wall):
         neighbors = []
