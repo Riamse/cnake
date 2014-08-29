@@ -41,7 +41,7 @@ def main(window):
     #press enter to start the game
     message_tracker = 0
     skip_count = 2
-    message = "PRESS ENTER TO START"
+    message = "  PRESS ENTER TO START  "
     while window.getch() != ord("\n"):
         ai.move() #make snake game play by itself on start menu
         display(window, ai, accept_input=False, sleep_rate=0.08)
@@ -49,7 +49,7 @@ def main(window):
             ai = Ai(WIDTH, HEIGHT)
         
         #window.addstr(HEIGHT - 3, i, message, curses.color_pair(Color.BLACK))
-        for i in range(0, WIDTH, WIDTH // 3):
+        for i in range(0, WIDTH + 1, WIDTH // 3):
             for pos, j in enumerate(message):
                 window.addch(HEIGHT - 3, (i + pos + message_tracker) % WIDTH, j)
         if skip_count == 2:
@@ -68,6 +68,19 @@ def main(window):
         game_over(window, snake)
 
 def display(window, snake, accept_input=True, sleep_rate=0.05):
+    y, x = window.getmaxyx()
+    if y < HEIGHT or x < WIDTH:
+        window.addstr(0, 0, "Please reset your terminal to default size to play")
+        sleep(3)
+        sys.exit()
+    if y > HEIGHT:
+        for i in range(0, WIDTH):
+            window.addch(HEIGHT, i, b"#")
+    if x > WIDTH:
+        for i in range(0, HEIGHT):
+            window.addch(i, WIDTH, b"#")
+            window.refresh()
+
     apple_colour = curses.color_pair(Color.GOLD) if snake.apple.gold else curses.color_pair(Color.GREEN)
     window.addch(snake.apple.y, snake.apple.x, b"A", apple_colour)
     window.move(0, 0)
