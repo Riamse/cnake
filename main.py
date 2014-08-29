@@ -71,6 +71,7 @@ def display(window, snake, accept_input=True, sleep_rate=0.05):
     y, x = window.getmaxyx()
     if y < HEIGHT or x < WIDTH:
         window.addstr(0, 0, "Please reset your terminal to default size to play")
+        window.refresh()
         sleep(3)
         sys.exit()
     if y > HEIGHT:
@@ -79,7 +80,6 @@ def display(window, snake, accept_input=True, sleep_rate=0.05):
     if x > WIDTH:
         for i in range(0, HEIGHT):
             window.addch(i, WIDTH, b"#")
-            window.refresh()
 
     apple_colour = curses.color_pair(Color.GOLD) if snake.apple.gold else curses.color_pair(Color.GREEN)
     window.addch(snake.apple.y, snake.apple.x, b"A", apple_colour)
