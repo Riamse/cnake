@@ -39,17 +39,29 @@ def main(window):
     # intro screen 
     ai = Ai(WIDTH, HEIGHT)
     #press enter to start the game
+    message_tracker = 0
+    skip_count = 2
+    message = "PRESS ENTER TO START"
     while window.getch() != ord("\n"):
         ai.move() #make snake game play by itself on start menu
-        display(window, ai, accept_input=False)
+        display(window, ai, accept_input=False, sleep_rate=0.08)
         if not ai.alive:
-            sleep(30)
             ai = Ai(WIDTH, HEIGHT)
+        
+        #window.addstr(HEIGHT - 3, i, message, curses.color_pair(Color.BLACK))
+        for i in range(0, WIDTH, WIDTH // 3):
+            for pos, j in enumerate(message):
+                window.addch(HEIGHT - 3, (i + pos + message_tracker) % WIDTH, j)
+        if skip_count == 2:
+            message_tracker += 1
+            message_tracker %= WIDTH
+            skip_count = 0
+        skip_count += 1
+        window.refresh()
     del ai
     window.clear()
 
     snake = Snake(WIDTH, HEIGHT)
-
     while snake.alive:
         display(window, snake)
     else:
