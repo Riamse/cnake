@@ -28,9 +28,7 @@ class Ai(Snake):
     def generate_path(self):
         location_queue = [(self.position, deepcopy(self.body))]
         came_from = {}
-        cost_at = {}
         came_from[self.position] = None
-        cost_at[self.position] = 0
 
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
@@ -43,6 +41,8 @@ class Ai(Snake):
                 travel_points = []
                 track_current = current
                 while came_from[track_current] != None:
+                    # construct the path by backtracking from the apple
+                    # to our starting point
                     travel_points.append(track_current)
                     track_current = came_from[track_current]
                 #travel_points.sort(key=self.dist)
@@ -66,9 +66,7 @@ class Ai(Snake):
                 break
             neighbors = self.get_adjacent_locs(current, moving_wall)
             for next in neighbors:
-                new_cost = cost_at[current] + 1
-                if next not in cost_at or new_cost < cost_at[next]:
-                    cost_at[next] = new_cost
+                if next not in came_from:
                     next_moving_wall = deepcopy(moving_wall)
                     del next_moving_wall[0]
                     next_moving_wall.append(next)
