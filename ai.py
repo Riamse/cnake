@@ -12,6 +12,8 @@ class Ai(Snake):
         #DEBUG
         #self.f = open('log.out', 'w')
         self.generate_path()
+        self.quit = False
+        self.start = False
 
     def move(self):
         if self.travel_points:

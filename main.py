@@ -42,11 +42,13 @@ def main(window):
     message_tracker = 0
     skip_count = 2
     message = "  PRESS ENTER TO START  "
-    while window.getch() != ord("\n"):
+    while not ai.start:
         ai.move() #make snake game play by itself on start menu
         display(window, ai, accept_input=False, sleep_rate=0.08)
         if not ai.alive:
             ai = Ai(WIDTH, HEIGHT)
+        if ai.quit:
+            sys.exit()
         
         #window.addstr(HEIGHT - 3, i, message, curses.color_pair(Color.BLACK))
         for i in range(0, WIDTH + 1, WIDTH // 3):
@@ -94,7 +96,12 @@ def display(window, snake, accept_input=True, sleep_rate=0.05):
     window.clear()
     ch = window.getch()
     if ch in [ord("q"), 27]: #27 == escape button
-        snake.alive = False
+        if not accept_input:
+            snake.quit = True
+        else:
+            snake.alive = False
+    elif ch == ord("\n"):
+        snake.start = True
     if accept_input:
         snake.set_direction(dir_dict.get(ch, None))
     snake.move()
