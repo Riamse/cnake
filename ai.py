@@ -33,10 +33,10 @@ class Ai(Snake):
         #instead of using priority queue, use regular list and sort it
         #with key function that returns distance to destinatetion
         while len(location_queue) > 0:
-            moving_wall = deepcopy(location_queue[0][1])
-            current = location_queue[0][0]
-            del location_queue[0]
-            
+            current = location_queue.pop(0)
+            moving_wall = deepcopy(current[1])
+            current = current[0]
+
             if current == self.apple.pos:
                 travel_points = []
                 track_current = current
