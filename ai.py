@@ -68,7 +68,8 @@ class Ai(Snake):
             for next in neighbors:
                 if next not in came_from:
                     next_moving_wall = deepcopy(moving_wall)
-                    del next_moving_wall[0]
+                    if len(next_moving_wall) > self.size:
+                        del next_moving_wall[0]
                     next_moving_wall.append(next)
                     location_queue.append((next, next_moving_wall))
                     came_from[next] = current
@@ -96,7 +97,7 @@ class Ai(Snake):
         dy = self.apple.y - val[1]
         #to_square = dx * dx + dy * dy
         #return to_square ** 2
-        return abs(dx) + abs(dy)
+        return abs(dx) + abs(dy) + self.width - val[0]
 
     def get_adjacent_locs(self, location, moving_wall):
         neighbors = []
