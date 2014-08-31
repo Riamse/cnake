@@ -6,9 +6,12 @@ import traceback
 import curses
 from time import sleep
 
-from ai import Ai
 from snake import Snake
 from apple import Apple
+if sys.version < '3':
+    from ai_py2 import Ai
+else:
+    from ai import Ai
 
 class Color():
     BLACK = 1 #snake color
